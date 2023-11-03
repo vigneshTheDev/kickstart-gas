@@ -4,16 +4,25 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "run-s clean cp:appsscript && run-p -l vite:dev gs:dev clasp:push:watch",
+    "build": "run-s clean vite:build gs:build cp:appsscript",
     "lint": "prettier --check . && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vite:dev": "vite --open --clearScreen=false",
+    "vite:build": "tsc && vite build",
+    "gs:dev": "tsc -p src/gs-server --watch",
+    "gs:build": "tsc -p src/gs-server",
+    "clasp:push:watch": "clasp push --watch",
+    "clean": "rimraf dist && mkdirp dist",
+    "cp:appsscript": "cp appsscript.json dist/"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/google-apps-script": "^1.0.76",
+    "@types/node": "^20.8.9",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -23,8 +32,13 @@
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "mkdirp": "^3.0.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-inspect": "^0.7.41"
   }
 }
